@@ -64,7 +64,6 @@ func (sc *ScoreController) GetScoresByUser(c *gin.Context) {
 		return
 	}
 
-	// Convert DB model to AI model
 	var arr []ScoreStruct
 	for _, s := range scores {
 		arr = append(arr, ScoreStruct{
