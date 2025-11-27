@@ -1,0 +1,36 @@
+version: '3'
+services: 
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: 34.122.78.142
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: Algoma@2024
+      DB_NAME:  postgres
+      GEMINI_KEY: AIzaSyCVESEilDe6iqKgdKYZ7S4_Dq7r4KMj9Po
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Algoma@2024
+      POSTGRES_DB: postgres
+    ports:
+      - "8000:5432"
+    volumes:
+      - db_data:/var/lib/postgresql
+      - ./db-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+volumes:
+  db_data:
